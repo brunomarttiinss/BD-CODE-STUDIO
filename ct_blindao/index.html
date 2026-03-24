@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CT Blindão - Forge Your Legend</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+  :root {
+    --gold: #F5C518;
+    --gold-dark: #C9A000;
+    --gold-light: #FFD740;
+    --black: #0A0A0A;
+    --black-2: #111111;
+    --black-3: #1A1A1A;
+    --white: #FFFFFF;
+    --gray: #8A8A8A;
+    --gray-metal: #3C3C3C;
+    --gray-light: #B0B0B0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.35;
+  }
+
+  /* ── NAVBAR ── */
+  .navbar {
+    background: rgba(10,10,10,0.97) !important;
+    border-bottom: 1px solid var(--gray-metal);
+    backdrop-filter: blur(12px);
+    min-height: 68px;
+    transition: border-color 0.3s;
+  }
+
+  .navbar-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 3px;
+    color: var(--gold) !important;
+  }
+.navbar-logo {
+  height: 48px;
+  width: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 40%;
+}
+  .navbar-brand span { color: var(--white); }
+
+  .navbar-nav .nav-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; font-size: 0.82rem;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--white) !important;
+    transition: color 0.2s;
+  }
+  .navbar-nav .nav-link:hover { color: var(--gold) !important; }
+
+  .btn-nav-cta {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900; font-size: 0.82rem;
+    letter-spacing: 2px; text-transform: uppercase;
+    background: var(--gold); color: var(--black) !important;
+    padding: 7px 20px !important;
+    clip-path: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+    transition: background 0.2s;
+  }
+  .btn-nav-cta:hover { background: var(--gold-light) !important; }
+
+  .navbar-toggler {
+    border-color: var(--gray-metal);
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(245,197,24,1)' stroke-linecap='round' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 20px;
+  }
+  .navbar-toggler:focus { box-shadow: none; }
+  .navbar-toggler-icon { display: none; }
+
+  @media (max-width: 991.98px) {
+    .navbar-collapse {
+      background: rgba(10,10,10,0.99);
+      padding: 1rem 1.5rem 1.5rem;
+      border-top: 1px solid var(--gray-metal);
+    }
+    .navbar-nav .nav-link {
+      padding: 0.65rem 0 !important;
+      border-bottom: 1px solid var(--gray-metal);
+    }
+    .btn-nav-cta { display: inline-block; margin-top: 1rem; }
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+    padding-top: 68px;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(135deg, rgba(245,197,24,0.08) 0%, transparent 50%),
+      linear-gradient(to bottom, transparent 55%, var(--black) 100%),
+      linear-gradient(to right, var(--black) 0%, rgba(0,0,0,0.25) 50%, var(--black) 100%),
+      url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600&q=80') center/cover no-repeat;
+  }
+  .hero-bg::after {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-45deg, transparent, transparent 80px, rgba(245,197,24,0.025) 80px, rgba(245,197,24,0.025) 82px);
+  }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); border: 1px solid var(--gold);
+    padding: 6px 16px; margin-bottom: 1.5rem;
+    clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+  }
+
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.8rem, 11vw, 9.5rem);
+    line-height: 0.9; letter-spacing: 2px;
+    animation: slideUp 0.8s ease both;
+  }
+  .line-gold { color: var(--gold); display: block; }
+  .line-white { color: var(--white); display: block; }
+  .line-outline { display: block; color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,0.18); }
+
+  .hero-sub {
+    font-size: 1.05rem; font-weight: 500;
+    color: var(--gray-light); line-height: 1.75;
+    margin: 1.5rem 0 2.5rem;
+    animation: slideUp 0.8s 0.2s ease both;
+  }
+
+  .hero-actions { animation: slideUp 0.8s 0.4s ease both; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem; color: var(--gold);
+    line-height: 1; display: block;
+  }
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.65rem; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gray);
+  }
+
+  .scroll-hint {
+    position: absolute; bottom: 28px; left: 50%;
+    transform: translateX(-50%); z-index: 2; opacity: 0.45;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 6px;
+    animation: bounce 2s infinite;
+  }
+  .scroll-hint span { font-family: 'Barlow Condensed', sans-serif; font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase; }
+  .scroll-line { width: 1px; height: 38px; background: var(--gold); }
+
+  /* ── BUTTONS ── */
+  .btn-gold {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem; letter-spacing: 3px;
+    background: var(--gold); color: var(--black);
+    padding: 14px 38px; text-decoration: none;
+    clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+    transition: all 0.2s; display: inline-block; border: none;
+  }
+  .btn-gold:hover { background: var(--gold-light); color: var(--black); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(245,197,24,0.35); }
+
+  .btn-outline-custom {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem; letter-spacing: 3px;
+    background: transparent; color: var(--white);
+    padding: 12px 36px; text-decoration: none;
+    border: 2px solid var(--gray-metal);
+    clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+    transition: all 0.2s; display: inline-block;
+  }
+  .btn-outline-custom:hover { border-color: var(--gold); color: var(--gold); }
+
+  .btn-dark-custom {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem; letter-spacing: 3px;
+    background: var(--black); color: var(--gold);
+    padding: 16px 48px; text-decoration: none;
+    clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+    transition: all 0.2s; display: inline-block; white-space: nowrap;
+  }
+  .btn-dark-custom:hover { background: var(--black-3); color: var(--gold); transform: translateY(-2px); }
+
+  /* ── TICKER ── */
+  .ticker { background: var(--gold); padding: 10px 0; overflow: hidden; white-space: nowrap; }
+  .ticker-inner { display: inline-flex; animation: ticker 22s linear infinite; }
+  .ticker-item { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; letter-spacing: 4px; color: var(--black); margin: 0 2rem; }
+  .ticker-sep { color: var(--black); opacity: 0.35; margin: 0 1rem; }
+
+  /* ── SECTIONS ── */
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.68rem; font-weight: 700;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); display: block; margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    line-height: 1; letter-spacing: 2px; margin-bottom: 1rem;
+  }
+  .section-title span { color: var(--gold); }
+
+  /* ── ABOUT ── */
+  .about-img-wrap {
+    position: relative;
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 93% 100%, 0 100%);
+  }
+  .about-img-wrap::before {
+    content: ''; position: absolute;
+    top: -10px; left: -10px; right: 30px; bottom: 30px;
+    border: 2px solid var(--gold);
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 93% 100%, 0 100%);
+    z-index: -1;
+  }
+  .about-img { width: 100%; height: 440px; object-fit: cover; filter: grayscale(15%) contrast(1.1); display: block; }
+  .about-tag {
+    position: absolute; bottom: -16px; right: -16px;
+    background: var(--gold); color: var(--black);
+    padding: 14px 24px; font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem; letter-spacing: 2px;
+    clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  }
+  @media (max-width: 767.98px) {
+    .about-img { height: 280px; }
+    .about-tag { font-size: 1rem; padding: 10px 16px; bottom: -12px; right: -12px; }
+  }
+
+  /* ── MODALITIES ── */
+  .mod-card { position: relative; height: 300px; overflow: hidden; cursor: pointer; }
+  .mod-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(60%) brightness(0.5); transition: all 0.5s; }
+  .mod-card:hover img { filter: grayscale(0%) brightness(0.55); transform: scale(1.06); }
+  .mod-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, transparent 60%);
+    display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem;
+  }
+  .mod-icon { font-size: 1.8rem; margin-bottom: 0.4rem; transition: transform 0.3s; }
+  .mod-card:hover .mod-icon { transform: scale(1.15); }
+  .mod-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; letter-spacing: 2px; }
+  .mod-desc { font-size: 0.78rem; color: var(--gray-light); margin-top: 0.3rem; max-height: 0; overflow: hidden; transition: max-height 0.4s; }
+  .mod-card:hover .mod-desc { max-height: 80px; }
+  .mod-line { width: 0; height: 2px; background: var(--gold); margin-top: 0.7rem; transition: width 0.4s; }
+  .mod-card:hover .mod-line { width: 38px; }
+
+  /* ── PLANS ── */
+  .plan-card {
+    background: var(--black-2); padding: 2.5rem 2rem;
+    position: relative; border-top: 3px solid transparent;
+    transition: transform 0.3s; height: 100%;
+  }
+  .plan-card:hover { transform: translateY(-8px); }
+  .plan-card.featured { border-top-color: var(--gold); background: var(--black-3); }
+
+  .plan-featured-badge {
+    position: absolute; top: 0; right: 0;
+    background: var(--gold); color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.62rem; font-weight: 900; letter-spacing: 3px; text-transform: uppercase;
+    padding: 6px 16px;
+    clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  .plan-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 3px; color: var(--gray-light); }
+  .plan-price { font-family: 'Bebas Neue', sans-serif; font-size: 3.8rem; line-height: 1; color: var(--gold); margin: 0.8rem 0 0.3rem; }
+  .plan-price sup { font-size: 1.6rem; vertical-align: top; margin-top: 0.5rem; }
+  .plan-price sub { font-size: 1.1rem; vertical-align: bottom; color: var(--gray); }
+  .plan-period { font-size: 0.75rem; color: var(--gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1.5rem; }
+  .plan-features { list-style: none; padding: 0; margin-bottom: 2rem; }
+  .plan-features li { font-size: 0.88rem; color: var(--gray-light); padding: 0.55rem 0; border-bottom: 1px solid var(--gray-metal); display: flex; align-items: center; gap: 0.5rem; }
+  .plan-features li::before { content: '▸'; color: var(--gold); font-size: 0.75rem; flex-shrink: 0; }
+
+  .plan-btn { display: block; text-align: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 3px; padding: 13px; text-decoration: none; transition: all 0.2s; clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); }
+  .plan-btn-outline { border: 1px solid var(--gray-metal); color: var(--white); }
+  .plan-btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .plan-btn-gold { background: var(--gold); color: var(--black); }
+  .plan-btn-gold:hover { background: var(--gold-light); color: var(--black); }
+
+  /* ── TEACHERS ── */
+  .teacher-card { background: var(--black-2); overflow: hidden; height: 100%; }
+  .teacher-img-wrap { height: 280px; overflow: hidden; }
+  .teacher-img-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(25%); transition: transform 0.5s; }
+  .teacher-card:hover .teacher-img-wrap img { transform: scale(1.05); }
+  .teacher-info { padding: 1.3rem 1.5rem; border-top: 2px solid var(--gray-metal); position: relative; }
+  .teacher-info::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.4s; }
+  .teacher-card:hover .teacher-info::after { width: 100%; }
+  .teacher-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 2px; }
+  .teacher-role { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+
+  /* ── SCHEDULE ── */
+  .schedule-wrap { overflow-x: auto; }
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: 90px repeat(6, 1fr);
+    gap: 1px; background: var(--gray-metal); min-width: 580px;
+  }
+  .sched-header, .sched-time, .sched-cell { background: var(--black); padding: 0.85rem 0.4rem; text-align: center; }
+  .sched-header { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); background: var(--black-3); }
+  .sched-time { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; font-weight: 600; color: var(--gray); text-align: right; padding: 0.85rem 0.9rem; background: var(--black-3); }
+  .sched-cell { font-size: 0.7rem; color: var(--gray-light); background: var(--black-2); }
+  .sched-cell.active { background: rgba(245,197,24,0.1); border: 1px solid rgba(245,197,24,0.25); color: var(--gold); font-weight: 600; }
+
+  /* ── CTA BAND ── */
+  .cta-band { background: var(--gold); padding: 72px 0; position: relative; overflow: hidden; }
+  .cta-band::before {
+    content: 'CT BLINDÃO'; position: absolute; right: -1%; top: 50%; transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 11vw, 10rem);
+    color: rgba(0,0,0,0.07); white-space: nowrap; pointer-events: none;
+  }
+  .cta-band .section-title { color: var(--black); }
+  .cta-band p { color: rgba(0,0,0,0.62); font-size: 1rem; }
+
+  /* ── TESTIMONIALS ── */
+  .test-card { background: var(--black-2); padding: 2.2rem; border-left: 3px solid var(--gray-metal); transition: border-color 0.3s; height: 100%; }
+  .test-card:hover { border-left-color: var(--gold); }
+  .test-quote { font-size: 2.8rem; color: var(--gold); opacity: 0.45; font-family: 'Bebas Neue', sans-serif; line-height: 0.8; margin-bottom: 0.8rem; }
+  .test-text { color: var(--gray-light); font-size: 0.93rem; line-height: 1.7; }
+  .test-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--gray-metal); display: flex; align-items: center; justify-content: center; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); flex-shrink: 0; }
+  .test-name { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 0.88rem; letter-spacing: 1px; text-transform: uppercase; }
+  .test-since { font-size: 0.73rem; color: var(--gray); }
+
+  /* ── LOCATION ── */
+  .location-detail { display: flex; gap: 1rem; margin-bottom: 1.8rem; align-items: flex-start; }
+  .loc-icon { width: 40px; height: 40px; background: var(--gold); color: var(--black); display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); }
+  .loc-text strong { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.2rem; }
+  .loc-text span { color: var(--gray-light); font-size: 0.93rem; }
+
+  .map-placeholder { background: var(--black-3); min-height: 100%; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .map-placeholder::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, var(--gray-metal) 0, var(--gray-metal) 1px, transparent 1px, transparent 40px), repeating-linear-gradient(90deg, var(--gray-metal) 0, var(--gray-metal) 1px, transparent 1px, transparent 40px); opacity: 0.12; }
+  .map-pin { position: relative; z-index: 1; text-align: center; }
+  .map-pin-dot { width: 24px; height: 24px; background: var(--gold); border-radius: 50%; margin: 0 auto 1rem; box-shadow: 0 0 0 8px rgba(245,197,24,0.2), 0 0 0 20px rgba(245,197,24,0.08); animation: pulse 2s infinite; }
+  .map-pin p { font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gray); }
+
+  /* ── FOOTER ── */
+  .footer-brand { font-family: 'Bebas Neue', sans-serif; font-size: 2.3rem; letter-spacing: 4px; color: var(--gold); display: block; }
+  .footer-brand span { color: var(--white); }
+  .footer-desc { color: var(--gray); font-size: 0.88rem; line-height: 1.7; }
+  .social-link { width: 36px; height: 36px; background: var(--gray-metal); color: var(--white); display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem; text-decoration: none; transition: background 0.2s; clip-path: polygon(5px 0, 100% 0, calc(100% - 5px) 100%, 0 100%); }
+  .social-link:hover { background: var(--gold); color: var(--black); }
+  .footer-col-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+  .footer-links { list-style: none; padding: 0; }
+  .footer-links li { margin-bottom: 0.6rem; }
+  .footer-links a { color: var(--gray); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-bottom p { font-size: 0.78rem; color: var(--gray); margin: 0; }
+  .gold { color: var(--gold); }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── KEYFRAMES ── */
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 8px rgba(245,197,24,0.2), 0 0 0 20px rgba(245,197,24,0.08); } 50% { box-shadow: 0 0 0 14px rgba(245,197,24,0.12), 0 0 0 28px rgba(245,197,24,0.04); } }
+  @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+  .benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+.benefit-card {
+  background: var(--black-2);
+  border: 1px solid var(--gray-metal);
+  border-top: 2px solid transparent;
+  padding: 1.2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  height: 100%;
+  transition: border-color 0.25s, transform 0.25s, background 0.25s;
+  cursor: default;
+}
+.benefit-card:hover {
+  border-color: var(--gold);
+  border-top-color: var(--gold);
+  background: var(--black-3);
+  transform: translateY(-3px);
+}
+.benefit-icon { font-size: 1.5rem; line-height: 1; }
+.benefit-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--gray-light);
+  text-transform: uppercase;
+  line-height: 1.3;
+}
+.benefit-card:hover .benefit-name { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ NAVBAR ═══════════════ -->
+<nav class="navbar navbar-expand-lg fixed-top">
+   <div class="container-xl px-3 px-lg-4">
+  <a class="navbar-brand py-2" href="#">
+  <img src="logo.png" alt="CT Blindão" class="navbar-logo" style="margin-right: 9px;">
+  CT <span>BLINDÃO</span>
+</a>
+    <button class="navbar-toggler border-0 p-2" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="width:38px;height:38px;">
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1 py-2 py-lg-0">
+        <li>  <a href="../index.html" class="btn btn-outline-secondary btn-sm">
+  ← Voltar ao Portfólio
+</a></li>
+        <li class="nav-item"><a class="nav-link" href="#sobre">Sobre</a></li>
+        <li class="nav-item"><a class="nav-link" href="#modalidades">Modalidades</a></li>
+        <li class="nav-item"><a class="nav-link" href="#professores">Professores</a></li>
+        <li class="nav-item"><a class="nav-link" href="#planos">Planos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#estrutura">Estrutura e Benefícios</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+        <li class="nav-item ms-lg-3"><a class="nav-link btn-nav-cta" href="#planos">Começar Agora</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container-xl px-3 px-lg-4 w-100">
+    <div class="row align-items-center py-5 py-lg-0 min-vh-100">
+      <div class="col-12 col-lg-7 hero-content pb-5 pb-lg-0">
+        <div class="hero-badge">▸ Centro de Treinamento Blindão</div>
+        <h1 class="hero-title">
+          <span class="line-white">FORJE</span>
+          <span class="line-gold">SEU</span>
+          <span class="line-outline">LIMITE</span>
+        </h1>
+        <p class="hero-sub">O melhor centro de treinamento da região. Estrutura de alto nível, professores especializados e a energia que você precisa para superar seus objetivos.</p>
+        <div class="hero-actions d-flex flex-wrap gap-3">
+          <a href="#planos" class="btn-gold">Quero Treinar</a>
+          <a href="#sobre" class="btn-outline-custom">Conhecer o CT</a>
+        </div>
+      </div>
+      <div class="col-12 col-lg-5 pb-5 pb-lg-0">
+        <div class="d-flex flex-row flex-lg-column gap-4 gap-lg-5 justify-content-start justify-content-lg-end pe-lg-3 pt-4 pt-lg-0">
+          <div class="text-lg-end">
+            <span class="stat-num">2K+</span>
+            <span class="stat-label">Alunos Ativos</span>
+          </div>
+          <div class="text-lg-end">
+            <span class="stat-num">12</span>
+            <span class="stat-label">Modalidades</span>
+          </div>
+          <div class="text-lg-end">
+            <span class="stat-num">3</span>
+            <span class="stat-label">Anos de Força</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-hint d-none d-md-flex">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══════════════ TICKER ═══════════════ -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">MUSCULAÇÃO</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">MUAY THAI</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">CROSSFIT</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">BOXE</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">SPINNING</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">FUNCIONAL</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">JUDÔ</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">CT BLINDÃO</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">MUSCULAÇÃO</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">MUAY THAI</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">CROSSFIT</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">BOXE</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">SPINNING</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">FUNCIONAL</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">JUDÔ</span><span class="ticker-sep">◆</span>
+    <span class="ticker-item">CT BLINDÃO</span><span class="ticker-sep">◆</span>
+  </div>
+</div>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section id="sobre" class="py-5" style="background: var(--black-2);">
+  <div class="container-xl px-3 px-lg-4 py-4">
+    <div class="row align-items-center g-5">
+      <div class="col-12 col-lg-6 reveal">
+        <span class="section-label">▸ Nossa História</span>
+        <h2 class="section-title">MAIS QUE UMA <span>ACADEMIA</span></h2>
+        <p class="mb-3" style="color:var(--gray-light); line-height:1.8;">O CT Blindão nasceu da paixão pelo esporte e pelo desenvolvimento humano. Fundado há 3 anos, nosso centro de treinamento é referência em qualidade, estrutura e resultados.</p>
+        <p class="mb-3" style="color:var(--gray-light); line-height:1.8;">Aqui você encontra equipamentos de última geração, profissionais altamente qualificados e uma comunidade que te impulsiona a ser melhor a cada dia.</p> 
+        <p class="mb-4" style="color:var(--gray-light); line-height:1.8;">Nossa missão é simples: transformar vidas através do esporte e do movimento, com seriedade, dedicação e resultados concretos.</p>
+        <a href="#planos" class="btn-gold">Começar Minha Jornada</a>
+      </div>
+      <div class="col-12 col-lg-6 reveal">
+        <div class="position-relative" style="padding-bottom:30px; padding-right:20px;">
+          <div class="about-img-wrap">
+            <img src="academia.jpeg" alt="Academia CT Blindão" class="about-img">
+          </div>
+          <div class="about-tag">DESDE 2023</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MODALITIES ═══════════════ -->
+<section id="modalidades" class="py-5" style="background: var(--black-3);">
+  <div class="container-xl px-3 px-lg-4 py-4">
+    <div class="reveal mb-4">
+      <span class="section-label">▸ O Que Oferecemos</span>
+      <h2 class="section-title">NOSSAS <span>MODALIDADES</span></h2>
+    </div>
+    <div class="row g-2 reveal">
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="mod-card">
+          <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500&q=80" alt="Musculação">
+          <div class="mod-overlay">
+            <div class="mod-icon">🏋️</div>
+            <div class="mod-name">Musculação</div>
+            <div class="mod-desc">Equipamentos premium, espaço amplo e acompanhamento personalizado.</div>
+            <div class="mod-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="mod-card">
+          <img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=500&q=80" alt="Muay Thai">
+          <div class="mod-overlay">
+            <div class="mod-icon">🥊</div>
+            <div class="mod-name">Muay Thai</div>
+            <div class="mod-desc">Arte marcial tailandesa com os melhores instrutores da região.</div>
+            <div class="mod-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="mod-card">
+          <img src="https://images.unsplash.com/photo-1534258936925-c58bed479fcb?w=500&q=80" alt="CrossFit">
+          <div class="mod-overlay">
+            <div class="mod-icon">⚡</div>
+            <div class="mod-name">CrossFit</div>
+            <div class="mod-desc">Treinamento de alta intensidade para resultados máximos.</div>
+            <div class="mod-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-xl-3">
+        <div class="mod-card">
+          <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&q=80" alt="Funcional">
+          <div class="mod-overlay">
+            <div class="mod-icon">🔥</div>
+            <div class="mod-name">Funcional</div>
+            <div class="mod-desc">Movimentos naturais que desenvolvem força, equilíbrio e condicionamento.</div>
+            <div class="mod-line"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PLANS ═══════════════ -->
+<section id="planos" class="py-5" style="background: var(--black);">
+  <div class="container-xl px-3 px-lg-4 py-4">
+    <div class="reveal mb-5">
+      <span class="section-label">▸ Investimento</span>
+      <h2 class="section-title">ESCOLHA SEU <span>PLANO</span></h2>
+      <p style="color:var(--gray-light); max-width:480px;">Planos flexíveis para todos os perfis.&nbsp;&nbsp;sem burocracia.</p>
+    </div>
+    <div class="row g-2 reveal">
+      <div class="col-12 col-md-4">
+        <div class="plan-card">
+          <div class="plan-name">Plano Básico</div>
+          <div class="plan-price"><sup>R$</sup>110<sub>/mês</sub></div>
+          <div class="plan-period">Contrato mensal</div>
+          <ul class="plan-features">
+            <li>Musculação ilimitada</li>
+            <li>Acesso das 6h às 22h</li>
+            <li>Avaliação física mensal</li>
+            <li>Vestiários completos</li>
+            <li>Wi-Fi gratuito</li>
+          </ul>
+          <a href="https://wa.me/5514996937837?text=Olá!%20Tenho%20interesse%20no%20*Plano%20Básico*%20(R%24110%2Fmês).%20Pode%20me%20ajudar%3F" target="_blank" class="plan-btn plan-btn-outline">Escolher Plano</a>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="plan-card">
+          <div class="plan-name">Plano Família</div> 
+          <div class="plan-price"><sup>R$</sup>100<sub>/mês</sub></div>
+          <div class="plan-period">Contrato mensal</div>
+          <ul class="plan-features">
+            <li>Tudo do Básico</li>
+            <li>2 modalidades à escolha</li>
+            <li>Personal trainer 2×/semana</li>
+            <li>Nutricionista parceiro</li>
+            <li>Área de recuperação</li>
+            <li>App exclusivo CT Blindão</li>
+          </ul>
+          <a href="https://wa.me/5514996937837?text=Olá!%20Tenho%20interesse%20no%20*Plano%20Família*%20(R%24100%2Fmês).%20Pode%20me%20ajudar%3F" target="_blank" class="plan-btn plan-btn-outline">Escolher Plano</a>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="plan-card">
+          <div class="plan-name">Plano + Avaliação</div>
+          <div class="plan-price"><sup>R$</sup>150<sub>/mês</sub></div>
+          <div class="plan-period">Contrato mensal</div>
+          <ul class="plan-features">
+            <li>Tudo do Família</li>
+            <li>Modalidades ilimitadas</li>
+            <li>Personal trainer 5×/semana</li>
+            <li>Zona VIP dedicada</li>
+            <li>Suplementos mensais</li>
+            <li>Acesso 24 horas</li>
+            <li>Sauna e spa</li>
+          </ul>
+          <a href="https://wa.me/5514996937837?text=Olá!%20Tenho%20interesse%20no%20*Plano%20%2B%20Avaliação*%20(R%24150%2Fmês).%20Pode%20me%20ajudar%3F" target="_blank" class="plan-btn plan-btn-outline">Escolher Plano</a>
+        </div>
+      </div>
+    </div>
+    <div class="row g-2 mt-3 ">
+    <div class="col-12 col-md-4 mt-4 reveal">
+        <div class="plan-card">
+          <div class="plan-name">Plano Trimestral</div>
+          <div class="plan-price"><sup>R$</sup>300<sub>(individual)</sub></div>
+          <div class="plan-price"><sup>R$</sup>280<sub>(Família)</sub></div>
+          <br>
+          <div class="plan-period">Contrato trimestral</div>
+          <ul class="plan-features">
+            <li>Tudo do Família</li>
+            <li>Modalidades ilimitadas</li>
+            <li>Personal trainer 5×/semana</li>
+            <li>Zona VIP dedicada</li>
+            <li>Suplementos mensais</li>
+            <li>Acesso 24 horas</li>
+            <li>Sauna e spa</li>
+          </ul>
+          <a href="https://wa.me/5514996937837?text=Olá!%20Tenho%20interesse%20no%20*Plano%20Trimestral*%20(R%24300).%20Pode%20me%20ajudar%3F" target="_blank" class="plan-btn plan-btn-outline">Escolher Plano</a>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 mt-4 reveal">
+        <div class="plan-card">
+          <div class="plan-name">Plano semestral</div>
+          <div class="plan-price"><sup>R$</sup>590<sub>(individual)</sub></div>
+          <div class="plan-price"><sup>R$</sup>560<sub>(Família)</sub></div>
+          <br>
+          <div class="plan-period">Contrato semestral</div>
+          <ul class="plan-features">
+            <li>Tudo do Família</li>
+            <li>Modalidades ilimitadas</li>
+            <li>Personal trainer 5×/semana</li>
+            <li>Zona VIP dedicada</li>
+            <li>Suplementos mensais</li>
+            <li>Acesso 24 horas</li>
+            <li>Sauna e spa</li>
+          </ul>
+          <a href="https://wa.me/5514996937837?text=Olá!%20Tenho%20interesse%20no%20*Plano%20Semestral*%20(R%24590).%20Pode%20me%20ajudar%3F" target="_blank" class="plan-btn plan-btn-outline">Escolher Plano</a>
+        </div>
+      </div>
+       <div class="col-12 col-md-4 mt-4 reveal">
+        <div class="plan-card featured">
+          <div class="plan-name">Plano anual</div>
+          <div class="plan-featured-badge">Mais Popular</div>
+          <div class="plan-price"><sup>R$</sup>1100<sub>(individual)</sub></div>
+          <div class="plan-price"><sup>R$</sup>1050<sub>(Família)</sub></div>
+          <br>
+          <div class="plan-period">Contrato anual</div>
+          <ul class="plan-features">
+            <li>Tudo do Família</li>
+            <li>Modalidades ilimitadas</li>
+            <li>Personal trainer 5×/semana</li>
+            <li>Zona VIP dedicada</li>
+            <li>Suplementos mensais</li>
+            <li>Acesso 24 horas</li>
+            <li>Sauna e spa</li>
+          </ul>
+          <a href="https://wa.me/5514996937837?text=Olá!%20Tenho%20interesse%20no%20*Plano%20Anual*%20(R%241100).%20Pode%20me%20ajudar%3F" target="_blank" class="plan-btn plan-btn-gold">Escolher Plano</a>
+        </div>
+      </div>
+  </div>
+  
+</section>
+
+<!-- ═══════════════ TEACHERS ═══════════════ -->
+<section id="professores" class="py-5" style="background: var(--black-2);">
+  <div class="container-xl px-3 px-lg-4 py-4">
+    <div class="reveal mb-5">
+      <span class="section-label">▸ Nosso Time</span>
+      <h2 class="section-title">OS <span>MESTRES</span> DO CT</h2>
+    </div>
+    <div class="row g-2 reveal">
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="teacher-card">
+          <div class="teacher-img-wrap">
+            <img src="nivaldo.jpeg" alt="Prof. Carlos">
+          </div>
+          <div class="teacher-info">
+            <div class="teacher-name">Nivaldo Borges</div>
+            <div class="teacher-role">Fundador · Musculação</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="teacher-card">
+          <div class="teacher-img-wrap">
+            <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=400&q=80" alt="Prof. Rafael">
+          </div>
+          <div class="teacher-info">
+            <div class="teacher-name">Rafael Santos</div>
+            <div class="teacher-role">Head Coach · CrossFit</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="teacher-card">
+          <div class="teacher-img-wrap">
+            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80" alt="Profa. Ana">
+          </div>
+          <div class="teacher-info">
+            <div class="teacher-name">Ana Ferreira</div>
+            <div class="teacher-role">Especialista · Funcional</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-lg-3">
+        <div class="teacher-card">
+          <div class="teacher-img-wrap">
+            <img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=400&q=80" alt="Prof. Diego">
+          </div>
+          <div class="teacher-info">
+            <div class="teacher-name">Diego Moraes</div>
+            <div class="teacher-role">Personal Trainer · Musculação</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ SCHEDULE ═══════════════ -->
+<section id="estrutura" class="py-5" style="background: var(--black);">
+  <div class="container-xl px-3 px-lg-4 py-4 reveal">
+    <span class="section-label">▸ Estrutura &amp; Benefícios</span>
+    <h2 class="section-title mb-2">TUDO QUE VOCÊ <span>PRECISA</span></h2>
+    <p class="mb-5" style="color:var(--gray); font-size:0.9rem; max-width:520px;">Uma academia completa pensada para o seu resultado. Infraestrutura moderna, suporte total do primeiro ao último treino.</p>
+    <div class="row g-2">
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">🏋️</div><div class="benefit-name">Musculação completa</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">⚙️</div><div class="benefit-name">Equipamentos modernos</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">📊</div><div class="benefit-name">Avaliação física</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">🎯</div><div class="benefit-name">Treino personalizado</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">🥗</div><div class="benefit-name">Orientação de dieta</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">📈</div><div class="benefit-name">Acompanhamento de resultados</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">❄️</div><div class="benefit-name">Ambiente climatizado</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">🛋️</div><div class="benefit-name">Área de descanso</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">🚿</div><div class="benefit-name">Vestiários completos</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">💧</div><div class="benefit-name">Água filtrada</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">🌱</div><div class="benefit-name">Treino para iniciantes</div></div></div>
+  <div class="col-6 col-sm-4 col-md-3 col-lg-2"><div class="benefit-card"><div class="benefit-icon">💪</div><div class="benefit-name">Treino para hipertrofia</div></div></div>
+</div>
+  </div>
+</section>
+
+<!-- ═══════════════ CTA BAND ═══════════════ -->
+<div class="cta-band reveal">
+  <div class="container-xl px-3 px-lg-4">
+    <div class="row align-items-center g-4">
+      <div class="col-12 col-lg-8">
+        <h2 class="section-title mb-1">PRONTO PARA <span style="color:var(--black);">COMEÇAR?</span></h2>
+        <p class="mb-0">Faça sua aula experimental gratuita hoje. Sem compromisso, só resultado.</p>
+      </div>
+      <div class="col-12 col-lg-4 text-lg-end">
+        <a href="#contato" class="btn-dark-custom">Aula Grátis Agora</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+<section id="depoimentos" class="py-5" style="background: var(--black-2);">
+  <div class="container-xl px-3 px-lg-4 py-4">
+    <div class="reveal mb-5">
+      <span class="section-label">▸ Resultados Reais</span>
+      <h2 class="section-title">O QUE DIZEM <span>NOSSOS ALUNOS</span></h2>
+    </div>
+    <div class="row g-2 reveal">
+      <div class="col-12 col-md-4">
+        <div class="test-card">
+          <div class="test-quote">"</div>
+          <p class="test-text">Em 6 meses no CT Blindão perdi 18kg e ganhei massa. Os professores são incríveis e o ambiente te motiva a dar o máximo todo dia. Melhor investimento da minha vida.</p>
+          <div class="d-flex align-items-center gap-3 mt-4">
+            <div class="test-avatar">MR</div>
+            <div><div class="test-name">Marcos Rocha</div><div class="test-since">Aluno desde 2022</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="test-card">
+          <div class="test-quote">"</div>
+          <p class="test-text">Sempre tive medo de academia mas aqui me senti acolhida desde o primeiro dia. O Muay Thai mudou minha autoestima e meu condicionamento. Indico pra todo mundo!</p>
+          <div class="d-flex align-items-center gap-3 mt-4">
+            <div class="test-avatar">JL</div>
+            <div><div class="test-name">Juliana Lima</div><div class="test-since">Aluna desde 2021</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4">
+        <div class="test-card">
+          <div class="test-quote">"</div>
+          <p class="test-text">Treino em várias academias da cidade e posso afirmar: o CT Blindão tem o melhor custo-benefício. Estrutura top, professores dedicados e resultado garantido.</p>
+          <div class="d-flex align-items-center gap-3 mt-4">
+            <div class="test-avatar">TP</div>
+            <div><div class="test-name">Thiago Peixoto</div><div class="test-since">Aluno desde 2023</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ LOCATION ═══════════════ -->
+<section id="contato" style="background: var(--black);">
+  <div class="row g-0">
+    <div class="col-12 col-lg-6" style="background: var(--black-3);">
+      <div class="p-4 p-md-5 reveal" style="max-width:600px; margin-left:auto;">
+        <span class="section-label">▸ Onde Estamos</span>
+        <h2 class="section-title mb-4">VENHA NOS <span>VISITAR</span></h2>
+        <div class="location-detail">
+          <div class="loc-icon"><i class="bi bi-geo-alt-fill"></i></div>
+          <div class="loc-text">
+            <strong>Endereço</strong>
+            <span>Av. Dr. Simão, 745 — Tibiriçá do Paranapanema<br>Piraju - SP, 18810-408</span>
+          </div>
+        </div>
+        <div class="location-detail">
+          <div class="loc-icon"><i class="bi bi-whatsapp"></i></div>
+          <div class="loc-text">
+            <strong>WhatsApp</strong>
+            <span>(14) 99693-7877</span>
+          </div>
+        </div>
+        <div class="location-detail">
+          <div class="loc-icon"><i class="bi bi-clock-fill"></i></div>
+          <div class="loc-text">
+            <strong>Horário de Funcionamento</strong>
+            <span>Seg–Sex: 05h00 às 23h00<br>Sáb: 09h às 12h </span>
+          </div>
+        </div>
+        <div class="location-detail">
+          <div class="loc-icon"><i class="bi bi-envelope-fill"></i></div>
+          <div class="loc-text">
+            <strong>E-mail</strong>
+            <span>coachdinhoborges@gmail.com</span>
+          </div>
+        </div>
+        <a href="https://wa.me/5514996937877" class="btn-gold mt-3 d-inline-block">
+          <i class="bi bi-whatsapp me-2"></i>Falar no WhatsApp
+        </a>
+      </div>
+    </div>
+    <div class="col-12 col-lg-6" style="min-height: 420px;">
+      <iframe
+      
+        src="https://maps.google.com/maps?q=Av.+Dr.+Sim%C3%A3o%2C+745%2C+Piraju%2C+SP%2C+18810-408%2C+Brasil&output=embed&hl=pt-BR&z=16"
+        width="100%"
+        height="100%"
+        style="border:0; min-height:420px; display:block; filter: grayscale(30%) contrast(1.1) brightness(0.85);"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Localização CT Blindão">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer class="pt-5 pb-3" style="background: var(--black); border-top: 1px solid var(--gray-metal);">
+  <div class="container-xl px-3 px-lg-4">
+    <div class="row g-4 pb-4">
+      <div class="col-12 col-md-6 col-lg-4">
+        <span class="footer-brand">CT <span>BLINDÃO</span></span>
+        <p class="footer-desc mt-2 mb-4">Centro de Treinamento de alto nível para quem leva o esporte a sério. Forjando campeões desde 2023.</p>
+        <div class="d-flex gap-2 flex-wrap">
+          <a href="#" class="social-link"><i class="bi bi-linkedin"></i></a>
+          <a href="https://www.instagram.com/ct_blindao" class="social-link"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-link"><i class="bi bi-youtube"></i></a> 
+        </div>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2 offset-lg-2">
+        <div class="footer-col-title">Modalidades</div>
+        <ul class="footer-links">
+          <li><a href="#">Musculação</a></li>
+          <li><a href="#">Muay Thai</a></li>
+          <li><a href="#">CrossFit</a></li>
+          <li><a href="#">Funcional</a></li>
+          <li><a href="#">Boxe</a></li>
+          <li><a href="#">Judô</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="footer-col-title">Sobre</div>
+        <ul class="footer-links">
+          <li><a href="#">Nossa História</a></li>
+          <li><a href="#">Equipe</a></li>
+          <li><a href="#">Planos</a></li>
+          <li><a href="#">Horários</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md-3 col-lg-2">
+        <div class="footer-col-title">Suporte</div>
+        <ul class="footer-links">
+          <li><a href="#">Fale Conosco</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Privacidade</a></li>
+          <li><a href="#">Termos de Uso</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="py-3 d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2" style="border-top: 1px solid var(--gray-metal);">
+      <p class="footer-desc mb-0">© 2025 <span class="gold">CT Blindão</span>. Todos os direitos reservados.</p>
+      <p class="footer-desc mb-0">Feito com 💪 para quem não desiste</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        [...e.target.children].forEach((c, i) => c.style.transitionDelay = `${i * 0.08}s`);
+      }
+    });
+  }, { threshold: 0.07 }).observe
+  reveals.forEach(r => new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); [...e.target.children].forEach((c, i) => c.style.transitionDelay = `${i * 0.08}s`); } });
+  }, { threshold: 0.07 }).observe(r));
+
+  // Navbar border on scroll
+  window.addEventListener('scroll', () => {
+    document.querySelector('.navbar').style.borderBottomColor = window.scrollY > 80 ? 'rgba(245,197,24,0.3)' : 'var(--gray-metal)';
+  });
+
+  // Close mobile menu on nav click
+  document.querySelectorAll('#navMenu .nav-link').forEach(l => l.addEventListener('click', () => {
+    const c = document.getElementById('navMenu');
+    if (c.classList.contains('show')) bootstrap.Collapse.getInstance(c)?.hide();
+  }));
+</script>
+</body>
+</html>
